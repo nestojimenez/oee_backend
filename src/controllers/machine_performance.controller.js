@@ -76,7 +76,7 @@ export const createMachinePerformance = async (req, res) => {
 };
 
 export const getMachinePerformanceTimeRange = async (req, res) => {
-  let { start_time, end_time, date } = req.params;
+  let { start_time, end_time, date, id } = req.params;
   console.log('Parameters from Req: ', start_time, end_time);
   start_time = hourToCurrentDate(start_time, date);
   end_time = hourToCurrentDate(end_time, date);
@@ -88,6 +88,7 @@ export const getMachinePerformanceTimeRange = async (req, res) => {
       .request()
       .input("start_time",sql.DateTime, start_time)
       .input("end_time",sql.DateTime, end_time)
+      .input("id", sql.Int, id)
       .query(query.getMachinePerformanceTimeRange);
     console.log(result.recordset);
     res.json(result.recordset);

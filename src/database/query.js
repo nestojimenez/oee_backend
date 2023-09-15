@@ -79,6 +79,7 @@ SELECT *,
   ORDER BY created_at ASC) AS LEAD_created_at
 FROM OEE_Machine_Performance WHERE created_at
 BETWEEN @start_time AND @end_time
+AND id_stations = @id
 `,
 
 leadCreatedValue:`

@@ -7,7 +7,7 @@ const router = Router();
 //Get All prodcuts
 router.get('/machine_performance', getMachinePerformance);
 
-router.get('/machine_performance/date_range/:start_time/:end_time/:date', getMachinePerformanceTimeRange)
+router.get('/machine_performance/date_range/:start_time/:end_time/:date/:id', getMachinePerformanceTimeRange)
 
 //Lead Created Value
 router.get('/machine_performance/lead_created_value', leadCreatedValue);
