@@ -87,7 +87,21 @@ SELECT *,
        LEAD(created_at, 1) OVER(
        ORDER BY created_at ASC) AS LEAD_created_at
 FROM OEE_Machine_Performance
-`
+`,
+
+postMachinePerformance:`
+INSERT INTO OEE_Machine_Performance(
+  id_products,
+  id_stations,
+  created_at,
+  updated_at
+)
+VALUES(
+  @id_products,
+  @id_stations,
+  @created_at,
+  @updated_at
+)`,
 
 };
 

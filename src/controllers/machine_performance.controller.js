@@ -4,10 +4,10 @@ import { query } from "../database";
 const hourToCurrentDate = (hour, date) => {
   const today = new Date();
 
-  const day = date.slice(6,8);
-  const month = (Number(date.slice(4,6))-1).toString(); //Months start on 0 = January
-  const year = date.slice(0,4);
-  console.log('Year: ', month);
+  const day = date.slice(6, 8);
+  const month = (Number(date.slice(4, 6)) - 1).toString(); //Months start on 0 = January
+  const year = date.slice(0, 4);
+  console.log("Year: ", month);
 
   const timeString = `${hour}:00`; //"03:37";
   console.log(timeString);
@@ -17,14 +17,17 @@ const hourToCurrentDate = (hour, date) => {
 
   // Use the setHours() function to assign hours and minutes
   // to the "today" date object
-  const modifiedDate = subtractHours(new Date(today.setHours(hours, minutes)), 7);
+  const modifiedDate = subtractHours(
+    new Date(today.setHours(hours, minutes)),
+    7
+  );
   modifiedDate.setFullYear(year, month, day);
   return modifiedDate;
 };
 
 function subtractHours(date, hours) {
   date.setHours(date.getHours() - hours);
-  const newDate = new Date(date)
+  const newDate = new Date(date);
   return newDate;
 }
 
@@ -77,17 +80,17 @@ export const createMachinePerformance = async (req, res) => {
 
 export const getMachinePerformanceTimeRange = async (req, res) => {
   let { start_time, end_time, date, id } = req.params;
-  console.log('Parameters from Req: ', start_time, end_time);
+  console.log("Parameters from Req: ", start_time, end_time);
   start_time = hourToCurrentDate(start_time, date);
   end_time = hourToCurrentDate(end_time, date);
-  console.log('Parameters from Req: ', start_time, end_time);
+  console.log("Parameters from Req: ", start_time, end_time);
 
   try {
     const pool = await getConnection();
     const result = await pool
       .request()
-      .input("start_time",sql.DateTime, start_time)
-      .input("end_time",sql.DateTime, end_time)
+      .input("start_time", sql.DateTime, start_time)
+      .input("end_time", sql.DateTime, end_time)
       .input("id", sql.Int, id)
       .query(query.getMachinePerformanceTimeRange);
     console.log(result.recordset);
@@ -99,15 +102,31 @@ export const getMachinePerformanceTimeRange = async (req, res) => {
 };
 
 export const leadCreatedValue = async (req, res) => {
+  try {
+    const pool = await getConnection();
+    const result = await pool.request().query(query.leadCreatedValue);
+    console.log(result.recordset);
+    res.json(result.recordset);
+  } catch (error) {
+    res.status(500);
+    res.send(error.message);
+  }
+};
 
+export const postMachinePerformance = async (req, res) => {
+  let { id_products, id_stations, created_at, updated_at } = req.params;
+  console.log(id_products, id_stations, created_at, updated_at);
   try {
     const pool = await getConnection();
     const result = await pool
       .request()
-      .query(query.leadCreatedValue);
+      .input("id_products", sql.Int, id_products)
+      .input("id_stations", sql.Int, id_stations)
+      .input("created_at", sql.DateTime, created_at)
+      .input("updated_at", sql.DateTime, updated_at)
+      .query(query.postMachinePerformance);
     console.log(result.recordset);
     res.json(result.recordset);
-    
   } catch (error) {
     res.status(500);
     res.send(error.message);
