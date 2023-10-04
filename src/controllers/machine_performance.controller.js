@@ -52,7 +52,7 @@ export const createMachinePerformance = async (req, res) => {
     created_at == null ||
     updated_at == null
   ) {
-    return res.status(400).json({ msg: "Bad rquest: Fill all fields" });
+    return res.status(400).json({ msg: "Bad request: Fill all fields" });
   }
 
   try {
@@ -126,6 +126,22 @@ export const postMachinePerformance = async (req, res) => {
       .input("updated_at", sql.DateTime, updated_at)
       .query(query.postMachinePerformance);
     console.log(result.recordset);
+    res.json(result.recordset);
+  } catch (error) {
+    res.status(500);
+    res.send(error.message);
+  }
+};
+
+export const getMachinePerformanceById = async (req, res) => {
+  const {id}= req.params;
+  try {
+    const pool = await getConnection();
+    const result = await pool
+    .request()
+    .input("id", id)
+    .query(query.getMachinePerformanceById);
+    console.log(result);
     res.json(result.recordset);
   } catch (error) {
     res.status(500);

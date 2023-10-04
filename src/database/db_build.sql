@@ -115,3 +115,29 @@ SELECT *,
        ORDER BY created_at ASC) AS LEAD_created_at
 FROM dbo.OEE_Machine_Performance
 
+-- TABLE FOR DOWNTIME  REASONS
+DROP TABLE IF EXISTS [dbo].[OEE_DT_reasons];
+CREATE TABLE [dbo].[OEE_DT_reasons](
+    [id] int IDENTITY(1,1) PRIMARY KEY,
+    [id_stations] int NOT NULL,
+    FOREIGN KEY (id_stations) REFERENCES OEE_Stations(id),
+    [dt_reasons] VARCHAR(180) NOT NULL,
+    [dt_code] int NOT NULL,
+    [created_at] DATETIME NOT NULL,
+    [updated_at] DATETIME NOT NULL,
+);
+
+INSERT INTO OEE_DT_reasons(
+    id_stations,
+    dt_reasons,
+    dt_code,
+    created_at,
+    updated_at
+)
+VALUES(
+    '2',
+    'St1, Mala colocacion de septum',
+    405,
+    convert(datetime,'2012-06-18T22:34:09.000Z'),
+    convert(datetime,'2012-06-18T22:34:09.000Z')
+);

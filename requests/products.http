@@ -50,7 +50,23 @@ Content-Type: application/json
 }
 
 ### :start_hour, :end_hour, :date and will return de lead_created_at also
-GET http://localhost:8000/machine_performance/date_range/13/15/20230901
+GET http://localhost:8000/machine_performance/date_range/11/12/20230927/2
 
 ### post machine perfomance with GET
-GET http://localhost:8000/machine_performance/post/6/1/2023-09-01 13:30:06.240/2023-09-01 13:30:06.240
+GET http://localhost:8000/machine_performance/post/6/1/2024-06-18T22:34:09.000Z/2024-06-18T22:34:09.000Z
+
+###Get machine performance by Id
+GET http://localhost:8000/machine_performance/id/52126
+
+###Get DT reasons by ID
+GET http://localhost:8000/downtime_reasons/2
+
+###Send data to update Downtime reason on Machine Performane Table
+POST http://localhost:8000/downtime_reasons/update
+Content-Type: application/json
+
+{
+    "id": "52126",
+    "id_dt_reason":"1",
+    "dt_reason":"My Downt Time new reason"
+}

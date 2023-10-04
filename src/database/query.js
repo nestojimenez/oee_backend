@@ -20,18 +20,18 @@ export const query = {
       @created_at,
       @updated_at
 )`,
-getProductById: `
+  getProductById: `
   SELECT * FROM OEE_Products
   WHERE id = @id
 `,
-deleteProduct: `
+  deleteProduct: `
     DELETE FROM OEE_Products
     WHERE id = @id
 `,
-countProducts: `
+  countProducts: `
     SELECT COUNT(*) FROM OEE_Products
 `,
-updateProductById: `
+  updateProductById: `
     UPDATE OEE_Products
     SET pr_name = @pr_name,
     pr_line = @pr_line,
@@ -42,24 +42,24 @@ updateProductById: `
     updated_at = @updated_at
     WHERE id = @id
 `,
-getAllStations: `
+  getAllStations: `
   SELECT * FROM OEE_Stations
 `,
 
-getStationById: `
+  getStationById: `
   SELECT * FROM OEE_Stations
   WHERE id = @id
 `,
 
-getAllProductsStations: `
+  getAllProductsStations: `
   SELECT * FROM OEE_ProductStations
 `,
 
-getMachinePerformance: `
+  getMachinePerformance: `
   SELECT * FROM OEE_Machine_Performance
 `,
 
-insertMachinePerformance: `
+  insertMachinePerformance: `
 INSERT INTO OEE_Machine_Performance(
   id_products,
   id_stations,
@@ -73,7 +73,7 @@ VALUES(
   @updated_at
 )`,
 
-getMachinePerformanceTimeRange:`
+  getMachinePerformanceTimeRange: `
 SELECT *,
   LEAD(created_at, 1) OVER(
   ORDER BY created_at ASC) AS LEAD_created_at
@@ -82,14 +82,14 @@ BETWEEN @start_time AND @end_time
 AND id_stations = @id
 `,
 
-leadCreatedValue:`
+  leadCreatedValue: `
 SELECT *, 
        LEAD(created_at, 1) OVER(
        ORDER BY created_at ASC) AS LEAD_created_at
 FROM OEE_Machine_Performance
 `,
 
-postMachinePerformance:`
+  postMachinePerformance: `
 INSERT INTO OEE_Machine_Performance(
   id_products,
   id_stations,
@@ -101,8 +101,23 @@ VALUES(
   @id_stations,
   @created_at,
   @updated_at
-)`,
+)
+SELECT * FROM OEE_Machine_Performance WHERE id = SCOPE_IDENTITY()`,
 
+  getMachinePerformanceById: `
+SELECT * FROM OEE_Machine_Performance
+WHERE id = @id
+`,
+
+  getDownTimeReasons: `
+  SELECT * FROM OEE_DT_reasons
+  WHERE id_stations = @id_stations
+`,
+
+  updateDownTimeReason: `
+UPDATE OEE_Machine_Performance
+SET id_dt_reason = @id_dt_reason, dt_reason= @dt_reason
+WHERE id=@id
+SELECT * FROM OEE_Machine_Performance WHERE id = @id
+`
 };
-
-
