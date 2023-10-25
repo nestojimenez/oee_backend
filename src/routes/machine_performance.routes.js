@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import { createMachinePerformance, getMachinePerformance, getMachinePerformanceById, getMachinePerformanceTimeRange, leadCreatedValue, postMachinePerformance } from '../controllers/machine_performance.controller';
+import { createMachinePerformance, getMachinePerformance, getMachinePerformanceById, getMachinePerformanceTimeRange, leadCreatedValue, postMachinePerformance, createMachinePerformanceWithDtReason } from '../controllers/machine_performance.controller';
 
 
 const router = Router();
@@ -18,6 +18,8 @@ router.get('/machine_performance/lead_created_value', leadCreatedValue);
 
 //Add a product
 router.post('/machine_performance', createMachinePerformance);
+
+router.post('/machine_performance_with_dt_reason', createMachinePerformanceWithDtReason)
 
 //Delete a product
 //router.delete('/products/:id', deleteProductById);

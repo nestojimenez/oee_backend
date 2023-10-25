@@ -5,7 +5,7 @@ export const getProductsStations = async (req, res) => {
   try {
     const pool = await getConnection();
     const result = await pool.request().query(query.getAllProductsStations);
-    console.log(result);
+    //console.log(result);
     res.json(result.recordset);
   } catch (error) {
     res.status(500);
@@ -42,7 +42,7 @@ export const createProductsStations = async (req, res) => {
       .input("updated_at", sql.DateTime, updated_at)
       .query(query.insertProducts);
 
-    console.log(result);
+    //console.log(result);
     res.json({ pr_name, pr_line, pr_station, pr_baan, pr_units, created_at, updated_at });
   } catch (error) {
     res.status(500);
@@ -59,7 +59,7 @@ export const getProductsStationsbyProducId = async (req, res) => {
       .request()
       .input("id", id)
       .query(query.getProductById);
-    console.log(result);
+    //console.log(result);
     res.json(result.recordset);
   } catch (error) {
     res.status(500);

@@ -73,6 +73,26 @@ VALUES(
   @updated_at
 )`,
 
+insertMachinePerformanceWithDtReason: `
+INSERT INTO OEE_Machine_Performance(
+  id_products,
+  id_stations,
+  created_at,
+  updated_at,
+  id_dt_reason,
+  dt_reason,
+  dummy
+)
+VALUES(
+  @id_products,
+  @id_stations,
+  @created_at,
+  @updated_at,
+  @id_dt_reason,
+  @dt_reason,
+  @dummy
+)`,
+
   getMachinePerformanceTimeRange: `
 SELECT *,
   LEAD(created_at, 1) OVER(

@@ -8,7 +8,7 @@ export const getDownTimeReasons = async (req, res) => {
       const result = await pool.request()
       .input("id_stations", id_stations)
       .query(query.getDownTimeReasons);
-      console.log(result);
+      //console.log(result);
       res.json(result.recordset);
     } catch (error) {
       res.status(500);
@@ -26,7 +26,7 @@ export const getDownTimeReasons = async (req, res) => {
       .input("id_dt_reason", id_dt_reason)
       .input("dt_reason", dt_reason)
       .query(query.updateDownTimeReason);
-      console.log('My recordset', result.recordset);
+      //console.log('My recordset', result.recordset);
       res.json(result.recordset);
     } catch (error) {
       res.status(500);

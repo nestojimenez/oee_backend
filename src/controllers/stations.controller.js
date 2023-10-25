@@ -5,7 +5,7 @@ export const getStations = async (req, res) => {
   try {
     const pool = await getConnection();
     const result = await pool.request().query(query.getAllStations);
-    console.log(result);
+    //console.log(result);
     res.json(result.recordset);
   } catch (error) {
     res.status(500);
@@ -22,7 +22,7 @@ export const getStationById = async (req, res) => {
         .request()
         .input("id", id)
         .query(query.getStationById);
-      console.log(result);
+      //console.log(result);
       res.json(result.recordset);
     } catch (error) {
       res.status(500);
