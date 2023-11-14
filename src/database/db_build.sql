@@ -21,10 +21,10 @@ INSERT INTO OEE_Products(
     updated_at
 )
 VALUES(
-    'T-Slim',
-    'Tandem',
-    'BackEnd',
-    'B12344567',
+    'Cequr',
+    'Simplicity',
+    'Harro1',
+    'B987654',
     'ea',
     convert(datetime,'18-06-12 10:34:09 PM',5),
     convert(datetime,'18-06-12 10:34:09 PM',5)
@@ -94,6 +94,9 @@ CREATE TABLE [dbo].[OEE_Machine_Performance](
     FOREIGN KEY (id_stations) REFERENCES OEE_Stations(id),
     [created_at] DATETIME NOT NULL,
     [updated_at] DATETIME NOT NULL,
+    [id_dt_reason] int,
+    [dt_reason] VARCHAR(180),
+    [dummy] int
 );
 
 INSERT INTO OEE_Machine_Performance(

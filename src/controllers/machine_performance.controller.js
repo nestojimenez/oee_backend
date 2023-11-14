@@ -3,8 +3,9 @@ import { query } from "../database";
 
 const hourToCurrentDate = (hour, date) => {
   const today = new Date();
-
+  console.log(hour, date);
   const day = date.slice(6, 8);
+  console.log("Day: ", day);
   const month = (Number(date.slice(4, 6)) - 1).toString(); //Months start on 0 = January
   //console.log(date);
   const year = date.slice(0, 4);
@@ -15,21 +16,24 @@ const hourToCurrentDate = (hour, date) => {
   // Use the substring() function to extract hours and minutes
   const hours = timeString.substring(0, 2);
   const minutes = timeString.substring(3, 5);
-
+  console.log(hours, minutes);
   // Use the setHours() function to assign hours and minutes
   // to the "today" date object
   const modifiedDate = subtractHours(
     new Date(today.setHours(hours, minutes, 0, 0)),
-    7
+    8 /////Cuando hay cambio de horario este valor es 7 para verano y 8 para invierno///////////////////////////
   );
   modifiedDate.setFullYear(year, month, day);
-  //console.log('Date to search', modifiedDate);
+  console.log('Date to search', modifiedDate);
   return modifiedDate;
 };
 
 function subtractHours(date, hours) {
+  console.log('Date', date);
   date.setHours(date.getHours() - hours);
+  console.log('Date', date);
   const newDate = new Date(date);
+  console.log('New Date', newDate);
   return newDate;
 }
 
