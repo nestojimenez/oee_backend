@@ -43,10 +43,12 @@ POST http://localhost:8000/machine_performance
 Content-Type: application/json
 
 {
-    "id_products": "2",
-    "id_stations":"2",
+    "id_products": "7",
+    "id_stations":"7",
     "created_at":"2021-06-18T22:34:09.000Z",
-    "updated_at":"2021-06-18T22:34:09.000Z"
+    "updated_at":"2021-06-18T22:34:09.000Z",
+    "passfail": "1"
+    
 }
 
 ###
@@ -64,7 +66,7 @@ Content-Type: application/json
 }
 
 ### :start_hour, :end_hour, :date and will return de lead_created_at also
-GET http://localhost:8000/machine_performance/date_range/16/17/20231113/7
+GET http://localhost:8000/machine_performance/date_range/09/10/20231123/7
 
 ### post machine perfomance with GET
 GET http://localhost:8000/machine_performance/post/6/1/2024-06-18T22:34:09.000Z/2024-06-18T22:34:09.000Z

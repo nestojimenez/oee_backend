@@ -9,7 +9,7 @@ router.get('/machine_performance', getMachinePerformance);
 
 router.get('/machine_performance/date_range/:start_time/:end_time/:date/:id', getMachinePerformanceTimeRange)
 
-router.get('/machine_performance/post/:id_products/:id_stations/:created_at/:updated_at', postMachinePerformance)
+router.get('/machine_performance/post/:id_products/:id_stations/:created_at/:updated_at/:passfail', postMachinePerformance)
 
 //Get Machine performance by ID
 router.get('/machine_performance/id/:id', getMachinePerformanceById);

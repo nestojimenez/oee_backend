@@ -50,13 +50,14 @@ export const getMachinePerformance = async (req, res) => {
 };
 
 export const createMachinePerformance = async (req, res) => {
-  const { id_products, id_stations, created_at, updated_at} = req.body;
- 
+  const { id_products, id_stations, created_at, updated_at, passfail} = req.body;
+ console.log(passfail);
   if (
     id_products == null ||
     id_stations == null ||
     created_at == null ||
-    updated_at == null
+    updated_at == null ||
+    passfail == null 
   ) {
     return res.status(400).json({ msg: "Bad request: Fill all fields" });
   }
@@ -69,6 +70,7 @@ export const createMachinePerformance = async (req, res) => {
       .input("id_stations", sql.VarChar, id_stations)
       .input("created_at", sql.DateTime, created_at)
       .input("updated_at", sql.DateTime, updated_at)
+      .input("passfail", passfail)
       .query(query.insertMachinePerformance);
 
     //console.log(result);
@@ -77,6 +79,7 @@ export const createMachinePerformance = async (req, res) => {
       id_stations,
       created_at,
       updated_at,
+      passfail
     });
   } catch (error) {
     res.status(500);

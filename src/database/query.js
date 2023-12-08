@@ -64,13 +64,15 @@ INSERT INTO OEE_Machine_Performance(
   id_products,
   id_stations,
   created_at,
-  updated_at
+  updated_at,
+  passfail
 )
 VALUES(
   @id_products,
   @id_stations,
   @created_at,
-  @updated_at
+  @updated_at,
+  @passfail
 )`,
 
 insertMachinePerformanceWithDtReason: `
