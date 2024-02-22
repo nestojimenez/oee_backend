@@ -13,6 +13,23 @@ export const getProductsStations = async (req, res) => {
   }
 };
 
+export const getProductsStationsById = async (req, res) => {
+  const { id_stations } = req.params;
+  //console.log(id_stations);
+  try {
+    const pool = await getConnection();
+    const result = await pool
+      .request()
+      .input("id_stations", id_stations)
+      .query(query.getProductStationsById);
+    //console.log(result);
+    res.json(result.recordset);
+  } catch (error) {
+    res.status(500);
+    res.send(error.message);
+  }
+}
+
 export const createProductsStations = async (req, res) => {
   const { pr_name, pr_line, pr_station, pr_baan,pr_units, created_at, updated_at } =
     req.body;

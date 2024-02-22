@@ -1,11 +1,14 @@
 import {Router} from 'express';
-import { createProductsStations, getProductsStations } from '../controllers/products_stations.controller';
+import { createProductsStations, getProductsStations, getProductsStationsById } from '../controllers/products_stations.controller';
 
 
 const router = Router();
 
 //Get All prodcuts
 router.get('/products_stations', getProductsStations);
+
+//Get All prodcuts
+router.get('/products_stations_byid/:id_stations', getProductsStationsById);
 
 
 

@@ -164,8 +164,8 @@ export const leadCreatedValue = async (req, res) => {
 };
 
 export const postMachinePerformance = async (req, res) => {
-  let { id_products, id_stations, created_at, updated_at } = req.params;
-  console.log(id_products, id_stations, created_at, updated_at);
+  let { id_products, id_stations, created_at, updated_at, passfail } = req.params;
+  console.log(id_products, id_stations, created_at, updated_at, passfail);
   try {
     const pool = await getConnection();
     const result = await pool
@@ -174,6 +174,7 @@ export const postMachinePerformance = async (req, res) => {
       .input("id_stations", sql.Int, id_stations)
       .input("created_at", sql.DateTime, created_at)
       .input("updated_at", sql.DateTime, updated_at)
+      .input("passfail", sql.Int, passfail)
       .query(query.postMachinePerformance);
     //console.log(result.recordset);
     res.json(result.recordset);

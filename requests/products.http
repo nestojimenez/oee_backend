@@ -18,7 +18,7 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:8000/products/5
+GET http://localhost:8000/products/7
 
 ###
 DELETE http://localhost:8000/products/100
@@ -69,7 +69,7 @@ Content-Type: application/json
 GET http://localhost:8000/machine_performance/date_range/09/10/20231123/7
 
 ### post machine perfomance with GET
-GET http://localhost:8000/machine_performance/post/6/1/2024-06-18T22:34:09.000Z/2024-06-18T22:34:09.000Z
+GET http://localhost:8000/machine_performance/post/6/1/2024-01-18T22:34:09.000Z/2024-06-18T22:34:09.000Z/1
 
 ###Get machine performance by Id
 GET http://localhost:8000/machine_performance/id/52126
@@ -86,3 +86,8 @@ Content-Type: application/json
     "id_dt_reason":"1",
     "dt_reason":"My Downt Time new reason"
 }
+###Get productStations
+GET http://localhost:8000/products_stations
+
+###Get productStations by ID
+GET http://localhost:8000/products_stations_byid/7

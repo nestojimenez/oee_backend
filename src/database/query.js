@@ -55,6 +55,11 @@ export const query = {
   SELECT * FROM OEE_ProductStations
 `,
 
+getProductStationsById: `
+SELECT * from OEE_ProductStations
+WHERE id_stations = @id_stations
+`,
+
   getMachinePerformance: `
   SELECT * FROM OEE_Machine_Performance
 `,
@@ -116,13 +121,15 @@ INSERT INTO OEE_Machine_Performance(
   id_products,
   id_stations,
   created_at,
-  updated_at
+  updated_at,
+  passfail
 )
 VALUES(
   @id_products,
   @id_stations,
   @created_at,
-  @updated_at
+  @updated_at,
+  @passfail
 )
 SELECT * FROM OEE_Machine_Performance WHERE id = SCOPE_IDENTITY()`,
 
