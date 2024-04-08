@@ -148,5 +148,51 @@ UPDATE OEE_Machine_Performance
 SET id_dt_reason = @id_dt_reason, dt_reason= @dt_reason
 WHERE id=@id
 SELECT * FROM OEE_Machine_Performance WHERE id = @id
-`
+`,
+
+getAlarmByStatus: `
+SELECT * FROM OEE_Support_Alarms
+WHERE al_status = @al_status
+`,
+
+createsupportAlarm: `
+INSERT INTO OEE_Support_Alarms(
+  id_stations,
+  al_status,
+  created_at,
+  updated_at
+)
+VALUES(
+  @id_stations,
+  @al_status,
+  @created_at,
+  @updated_at
+)`,
+
+getAlarmByStatusStation: `
+SELECT 
+	OEE_Support_Alarms.id AS AlarmId,
+	OEE_Support_Alarms.id_stations,
+	OEE_Support_Alarms.al_status,
+	OEE_Support_Alarms.created_at AS createdAt,
+	OEE_Support_Alarms.updated_at AS updatedAt,
+	OEE_Stations.id,
+	OEE_Stations.st_name,
+	OEE_Stations.st_line,
+	OEE_Stations.st_unhappy_oee,
+	OEE_Stations.st_happy_oee,
+	OEE_Stations.created_at,
+	OEE_Stations.updated_at
+FROM OEE_Support_Alarms JOIN OEE_Stations
+ON OEE_Support_Alarms.id_stations= OEE_Stations.id
+WHERE al_status = 1
+`,
+
+getAlarmByStatusAndStation: `
+SELECT * FROM OEE_Support_Alarms
+WHERE al_status = @al_status
+AND id_stations = @id_stations  
+`,
 };
+
+

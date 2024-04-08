@@ -144,3 +144,20 @@ VALUES(
     convert(datetime,'2012-06-18T22:34:09.000Z'),
     convert(datetime,'2012-06-18T22:34:09.000Z')
 );
+
+-- TABLE FOR SUPPORT ALARMS
+DROP TABLE IF EXISTS [dbo].[OEE_Support_Alarms];
+CREATE TABLE [dbo].[OEE_Support_Alarms](
+    [id] int IDENTITY(1,1) PRIMARY KEY,
+    [id_stations] int NOT NULL,
+	[al_status] int NOT NULL,
+    FOREIGN KEY (id_stations) REFERENCES OEE_Stations(id),
+    [created_at] DATETIME NOT NULL,
+    [updated_at] DATETIME NOT NULL,
+);
+
+--Get all alarms by al_status together with station definition
+SELECT * FROM OEE_Support_Alarms
+INNER JOIN OEE_Stations
+ON OEE_Support_Alarms.id_stations = OEE_Stations.id
+WHERE al_status = 1
