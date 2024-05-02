@@ -157,12 +157,14 @@ WHERE al_status = @al_status
 
 createsupportAlarm: `
 INSERT INTO OEE_Support_Alarms(
+  employee,
   id_stations,
   al_status,
   created_at,
   updated_at
 )
 VALUES(
+  @employee,
   @id_stations,
   @al_status,
   @created_at,
@@ -172,6 +174,7 @@ VALUES(
 getAlarmByStatusStation: `
 SELECT 
 	OEE_Support_Alarms.id AS AlarmId,
+  OEE_Support_Alarms.employee,
 	OEE_Support_Alarms.id_stations,
 	OEE_Support_Alarms.al_status,
 	OEE_Support_Alarms.created_at AS createdAt,
@@ -193,6 +196,44 @@ SELECT * FROM OEE_Support_Alarms
 WHERE al_status = @al_status
 AND id_stations = @id_stations  
 `,
+
+getAlarms: `
+SELECT * FROM OEE_Support_Alarms
+`,
+
+getAlarmsUsers: `
+  SELECT * FROM OEE_Support_Alarms_Users
+`,
+
+getAlarmsUsersByEmployeeNo: `
+SELECT * FROM OEE_Support_Alarms_Users
+WHERE user_employee_no = @user_employee_no
+`,
+
+getLastAlarmsForEachStation: `
+DECLARE @stations INT = 1
+WHILE @stations < 9
+BEGIN
+SELECT DISTINCT TOP (1) 
+	OEE_Support_Alarms.id AS AlarmId,
+	OEE_Support_Alarms.employee,
+	OEE_Support_Alarms.id_stations,
+	OEE_Support_Alarms.al_status,
+	OEE_Support_Alarms.created_at AS createdAt,
+	OEE_Support_Alarms.updated_at AS updatedAt,
+	OEE_Stations.id,
+	OEE_Stations.st_name,
+	OEE_Stations.st_line,
+	OEE_Stations.st_unhappy_oee,
+	OEE_Stations.st_happy_oee,
+	OEE_Stations.created_at,
+	OEE_Stations.updated_at
+  FROM OEE_Support_Alarms JOIN OEE_Stations
+  ON OEE_Support_Alarms.id_stations = OEE_Stations.id
+  WHERE id_stations = @stations
+  ORDER BY AlarmId DESC
+  SET @stations = @stations +1
+  END;
+
+`,
 };
-
-

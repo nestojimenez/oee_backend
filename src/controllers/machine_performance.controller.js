@@ -21,7 +21,7 @@ const hourToCurrentDate = (hour, date) => {
   // to the "today" date object
   const modifiedDate = subtractHours(
     new Date(today.setHours(hours, minutes, 0, 0)),
-    8 /////Cuando hay cambio de horario este valor es 7 para verano y 8 para invierno///////////////////////////
+    7 /////Cuando hay cambio de horario este valor es 7 para verano y 8 para invierno///////////////////////////
   );
   modifiedDate.setFullYear(year, month, day);
   console.log('Date to search', modifiedDate);

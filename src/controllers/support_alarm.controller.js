@@ -1,5 +1,6 @@
 import { getConnection, sql } from "../database";
 import { query } from "../database";
+import transporter from "../helpers/mailer";
 
 export const getAlarmByStatus = async (req, res) => {
     const { al_status } = req.params;
@@ -18,18 +19,37 @@ export const getAlarmByStatus = async (req, res) => {
     }
   };
 
+export const getAlarms = async (req, res) => {
+    try {
+      const pool = await getConnection();
+      const result = await pool.request().query(query.getAlarms);
+      console.log(result);
+      res.json(result.recordset);
+    } catch (error) {
+      res.status(500);
+      res.send(error.message);
+    }
+}
+
   export const createsupportAlarm = async (req, res) => {
-    const { id_stations, al_status, created_at, updated_at } = req.body;
-  
-    if (id_stations == null || al_status == null || created_at == null || updated_at == null) {
+    const { employee, id_stations, al_status, created_at, updated_at } = req.body;
+
+    let d = new Date();
+    let dOnMiliSeconds = d.getTime();
+    let hoursToSubstract = 7;
+    let addMiliSeconds = 60 * 60 *1000 * hoursToSubstract;
+    let currentDate = new Date(dOnMiliSeconds - addMiliSeconds);
+
+    if (employee == null, id_stations == null || al_status == null || created_at == null || updated_at == null) {
       return res.status(400).json({ msg: "Bad Request. Please Fill all fields" });
     }
 
     let newDestination = {
+      employee: employee,
       id_stations: id_stations,
       al_status: al_status,
-      created_at: new Date(),
-      updated_at: new Date()
+      created_at: currentDate,
+      updated_at: currentDate
     }
 
     console.log("New Alarm", newDestination )
@@ -38,10 +58,11 @@ export const getAlarmByStatus = async (req, res) => {
       const pool = await getConnection();
       const result = await pool
         .request()
+        .input("employee", employee)
         .input("id_stations", id_stations)
         .input("al_status", al_status)
-        .input("created_at",sql.DateTime, new Date())
-        .input("updated_at",sql.DateTime, new Date())
+        .input("created_at",sql.DateTime, currentDate)
+        .input("updated_at",sql.DateTime, currentDate)
         .query(query.createsupportAlarm);
       res.status(201).end(JSON.stringify(newDestination));
       console.log("MyRecordset", "OK");
@@ -86,4 +107,30 @@ export const getAlarmByStatus = async (req, res) => {
       res.status(500);
       res.send(error.message);
     }
-  }
+  };
+
+  export const getLastAlarmsForEachStation = async (req, res) => {
+    try {
+      const pool = await getConnection();
+      const result = await pool.request().query(query.getLastAlarmsForEachStation);
+      console.log("result", [].concat(...result.recordsets));
+      res.json([].concat(...result.recordsets));
+    } catch (error) {
+      res.status(500);
+      res.send(error.message);
+    }
+  };
+
+  export const sendAlarmEmail = async (req, res) => {
+    try{
+      let info = transporter.sendMail({
+        from: 'aguiladescalza@gmail.com',
+        to: 'cesar.jimenez@flex.com',
+        subject: 'Test',
+        body: 'Hello World'
+      })
+    } catch(error){
+      console.log("Error", error);
+    }
+    
+  };
