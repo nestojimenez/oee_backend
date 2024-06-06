@@ -51,6 +51,8 @@ Content-Type: application/json
     
 }
 
+http://10.105.173.111/
+
 ###
 POST http://localhost:8000/machine_performance_with_dt_reason
 Content-Type: application/json
@@ -66,7 +68,7 @@ Content-Type: application/json
 }
 
 ### :start_hour, :end_hour, :date and will return de lead_created_at also
-GET http://localhost:8000/machine_performance/date_range/09/10/20231123/7
+GET http://localhost:8000/machine_performance/date_range/06/07/20240603/7
 
 ### post machine perfomance with GET
 GET http://localhost:8000/machine_performance/post/6/1/2024-01-18T22:34:09.000Z/2024-06-18T22:34:09.000Z/1
@@ -110,7 +112,8 @@ Content-Type: application/json
     "id_stations":"1",
     "al_status":"1",    
     "created_at":"2023-03-18T22:34:09.000Z",
-    "updated_at":"2023-06-18T22:34:09.000Z"
+    "updated_at":"2023-06-18T22:34:09.000Z",
+    "station_module":"Testing"
 }
 
 ###Get Support Alarm by Al_Status
@@ -131,3 +134,12 @@ GET http://localhost:8000/support_alarm_last
 
 ###Sent email
 GET http://localhost:8000/support_alarm_email
+
+###Get Station Modules by Station ID
+GET http://localhost:8000/station_modules/4
+
+###Get All Stations Modules
+GET http://localhost:8000/station_modules/
+
+###Get All Stations Modules
+GET http://localhost:8000/station_modules/line/Simplicity

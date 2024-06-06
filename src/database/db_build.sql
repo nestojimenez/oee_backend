@@ -215,3 +215,23 @@ SELECT DISTINCT TOP (1)
   ORDER BY AlarmId DESC
   SET @stations = @stations +1
   END;
+
+  -- TABLE FOR Stations Modules (Machine Modules)
+DROP TABLE IF EXISTS [dbo].[OEE_StationModules];
+CREATE TABLE [dbo].[OEE_StationModules](
+    [id] int IDENTITY(1,1) PRIMARY KEY,
+    FOREIGN KEY [id_stations] REFERENCES OEE_Stations(id),
+    [module_name] VARCHAR(180) NOT NULL,
+    [created_at] DATETIME NOT NULL,
+    [updated_at] DATETIME NOT NULL,
+);
+
+--Get all Stations Modules where st_line = 'Simplicity'
+SELECT
+	OEE_StationModules.id as moduleId,
+	OEE_StationModules.module_name,
+	OEE_Stations.st_name,
+	OEE_Stations.st_line
+FROM OEE_StationModules JOIN OEE_Stations
+ON OEE_StationModules.id_stations = OEE_Stations.id
+WHERE st_line = 'Simplicity'

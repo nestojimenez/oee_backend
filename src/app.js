@@ -9,6 +9,7 @@ import machinePerformance from './routes/machine_performance.routes.js'
 import dtReasons from './routes/dt_reasons.routes.js'
 import alSupport from './routes/support_alarms.routes.js'
 import supportAlarmUsers from './routes/support_alarms_users.routes.js'
+import stationsModules from './routes/station_modules.routes.js'
 
 const app = express();
 
@@ -26,6 +27,7 @@ app.use(machinePerformance);
 app.use(dtReasons);
 app.use(alSupport);
 app.use(supportAlarmUsers);
+app.use(stationsModules);
 
 
 export default app

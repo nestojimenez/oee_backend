@@ -1,22 +1,29 @@
 import { getConnection, sql } from "../database";
 import { query } from "../database";
 
-const hourToCurrentDate = (hour, date) => {
+const hourToCurrentDate = (hour, date, shift) => {
   const today = new Date();
-  console.log(hour, date);
-  const day = date.slice(6, 8);
-  console.log("Day: ", day);
+  //console.log('Horas y dias', hour, date);
+  let day = date.slice(6, 8);
+  //console.log("Day: ", day);
   const month = (Number(date.slice(4, 6)) - 1).toString(); //Months start on 0 = January
   //console.log(date);
   const year = date.slice(0, 4);
   //console.log("Year: ", month);
-
+  //Review if is a night shift and adapt date
+  if (hour === '07' && shift === 'N') {
+    //console.log('Es turno de la noche');
+    day = '0' + (Number(day) +1).toString();
+    //console.log('Year', day);
+    
+  }
+  //////////////////////////////////////////////////////////////////////////////
   const timeString = `${hour}:00`; //"03:37";
   //console.log(timeString);
   // Use the substring() function to extract hours and minutes
   const hours = timeString.substring(0, 2);
   const minutes = timeString.substring(3, 5);
-  console.log(hours, minutes);
+  //console.log('Horas y minutios reales', hours, minutes);
   // Use the setHours() function to assign hours and minutes
   // to the "today" date object
   const modifiedDate = subtractHours(
@@ -24,16 +31,19 @@ const hourToCurrentDate = (hour, date) => {
     7 /////Cuando hay cambio de horario este valor es 7 para verano y 8 para invierno///////////////////////////
   );
   modifiedDate.setFullYear(year, month, day);
-  console.log('Date to search', modifiedDate);
+  //if(hours === '06'){
+    console.log('Date to search', modifiedDate);
+  //}
+  
   return modifiedDate;
 };
 
 function subtractHours(date, hours) {
-  console.log('Date', date);
+  //console.log('Date', date);
   date.setHours(date.getHours() - hours);
-  console.log('Date', date);
+  //console.log('Date', date);
   const newDate = new Date(date);
-  console.log('New Date', newDate);
+  //console.log('New Date', newDate);
   return newDate;
 }
 
@@ -51,7 +61,7 @@ export const getMachinePerformance = async (req, res) => {
 
 export const createMachinePerformance = async (req, res) => {
   const { id_products, id_stations, created_at, updated_at, passfail} = req.body;
- console.log(passfail);
+ //console.log(passfail);
   if (
     id_products == null ||
     id_stations == null ||
@@ -89,7 +99,7 @@ export const createMachinePerformance = async (req, res) => {
 
 export const createMachinePerformanceWithDtReason = async(req, res)=> {
   const { id_products, id_stations, created_at, updated_at, id_dt_reason, dt_reason, dummy} = req.body;
-  console.log(dummy);
+  //console.log(dummy);
   if (
     id_products == null ||
     id_stations == null ||
@@ -130,9 +140,18 @@ export const createMachinePerformanceWithDtReason = async(req, res)=> {
 
 export const getMachinePerformanceTimeRange = async (req, res) => {
   let { start_time, end_time, date, id } = req.params;
-  //console.log("Parameters from Req: ", start_time, end_time);
-  start_time = hourToCurrentDate(start_time, date);
-  end_time = hourToCurrentDate(end_time, date);
+  console.log("Parameters from Reqxxxx: ", start_time, end_time);
+  let shift = 'D';
+
+  if(start_time === '06' && end_time === '07'){
+    shift = 'N';
+    start_time = hourToCurrentDate(start_time, date, shift);
+    end_time = hourToCurrentDate(end_time, date, shift);
+  }else{
+    start_time = hourToCurrentDate(start_time, date, shift);
+    end_time = hourToCurrentDate(end_time, date, shift);
+  }
+ 
   //console.log("Parameters from Req: ", start_time, end_time);
 
   try {
@@ -165,7 +184,7 @@ export const leadCreatedValue = async (req, res) => {
 
 export const postMachinePerformance = async (req, res) => {
   let { id_products, id_stations, created_at, updated_at, passfail } = req.params;
-  console.log(id_products, id_stations, created_at, updated_at, passfail);
+  //console.log(id_products, id_stations, created_at, updated_at, passfail);
   try {
     const pool = await getConnection();
     const result = await pool

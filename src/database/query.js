@@ -1,3 +1,6 @@
+import { getStationsModulesByStationId } from "../controllers/station_modules.controller";
+import { getLastAlarmsForEachStation } from "../controllers/support_alarm.controller";
+
 export const query = {
   getAllProducts: `SELECT * FROM OEE_Products`,
 
@@ -55,7 +58,7 @@ export const query = {
   SELECT * FROM OEE_ProductStations
 `,
 
-getProductStationsById: `
+  getProductStationsById: `
 SELECT * from OEE_ProductStations
 WHERE id_stations = @id_stations
 `,
@@ -80,7 +83,7 @@ VALUES(
   @passfail
 )`,
 
-insertMachinePerformanceWithDtReason: `
+  insertMachinePerformanceWithDtReason: `
 INSERT INTO OEE_Machine_Performance(
   id_products,
   id_stations,
@@ -150,28 +153,30 @@ WHERE id=@id
 SELECT * FROM OEE_Machine_Performance WHERE id = @id
 `,
 
-getAlarmByStatus: `
+  getAlarmByStatus: `
 SELECT * FROM OEE_Support_Alarms
 WHERE al_status = @al_status
 `,
 
-createsupportAlarm: `
+  createsupportAlarm: `
 INSERT INTO OEE_Support_Alarms(
   employee,
   id_stations,
   al_status,
   created_at,
-  updated_at
+  updated_at,
+  station_module
 )
 VALUES(
   @employee,
   @id_stations,
   @al_status,
   @created_at,
-  @updated_at
+  @updated_at,
+  @station_module
 )`,
 
-getAlarmByStatusStation: `
+  getAlarmByStatusStation: `
 SELECT 
 	OEE_Support_Alarms.id AS AlarmId,
   OEE_Support_Alarms.employee,
@@ -191,26 +196,26 @@ ON OEE_Support_Alarms.id_stations= OEE_Stations.id
 WHERE al_status = 1
 `,
 
-getAlarmByStatusAndStation: `
+  getAlarmByStatusAndStation: `
 SELECT * FROM OEE_Support_Alarms
 WHERE al_status = @al_status
 AND id_stations = @id_stations  
 `,
 
-getAlarms: `
+  getAlarms: `
 SELECT * FROM OEE_Support_Alarms
 `,
 
-getAlarmsUsers: `
+  getAlarmsUsers: `
   SELECT * FROM OEE_Support_Alarms_Users
 `,
 
-getAlarmsUsersByEmployeeNo: `
+  getAlarmsUsersByEmployeeNo: `
 SELECT * FROM OEE_Support_Alarms_Users
 WHERE user_employee_no = @user_employee_no
 `,
 
-getLastAlarmsForEachStation: `
+  getLastAlarmsForEachStationxxx: `
 DECLARE @stations INT = 1
 WHILE @stations < 9
 BEGIN
@@ -221,6 +226,7 @@ SELECT DISTINCT TOP (1)
 	OEE_Support_Alarms.al_status,
 	OEE_Support_Alarms.created_at AS createdAt,
 	OEE_Support_Alarms.updated_at AS updatedAt,
+  OEE_Support_Alarms.station_module,
 	OEE_Stations.id,
 	OEE_Stations.st_name,
 	OEE_Stations.st_line,
@@ -236,4 +242,55 @@ SELECT DISTINCT TOP (1)
   END;
 
 `,
+
+  getLastAlarmsForEachStation: `
+DECLARE @stations INT = 1
+WHILE @stations < 9
+BEGIN
+SELECT DISTINCT TOP (1) 
+	OEE_Support_Alarms.id AS AlarmId,
+	OEE_Support_Alarms.employee,
+	OEE_Support_Alarms_Users.user_name,
+	OEE_Support_Alarms.id_stations,
+	OEE_Support_Alarms.al_status,
+	OEE_Support_Alarms.created_at AS createdAt,
+	OEE_Support_Alarms.updated_at AS updatedAt,
+  OEE_Support_Alarms.station_module,
+	OEE_Stations.id,
+	OEE_Stations.st_name,
+	OEE_Stations.st_line,
+	OEE_Stations.st_unhappy_oee,
+	OEE_Stations.st_happy_oee,
+	OEE_Stations.created_at,
+	OEE_Stations.updated_at
+  FROM OEE_Support_Alarms 
+  JOIN OEE_Stations
+  ON OEE_Support_Alarms.id_stations = OEE_Stations.id
+  JOIN OEE_Support_Alarms_Users
+  ON OEE_Support_Alarms.employee = OEE_Support_Alarms_Users.id
+  WHERE id_stations = @stations
+  ORDER BY AlarmId DESC
+  SET @stations = @stations +1
+  END;`,
+
+  getStationsModulesByStationId: `
+  SELECT * FROM OEE_StationModules
+  WHERE id_stations = @id_stations
+`,
+
+  getAllStationsModules: `  
+  SELECT * FROM OEE_StationModules
+  `,
+
+  getStationsModulesByStationLine: `
+  SELECT 
+    OEE_StationModules.id as moduleId,
+	  OEE_StationModules.module_name,
+    OEE_Stations.id as stationId,
+	  OEE_Stations.st_name,
+	  OEE_Stations.st_line
+  FROM OEE_StationModules JOIN OEE_Stations
+  ON OEE_StationModules.id_stations = OEE_Stations.id
+  WHERE st_line = @st_line
+  `,
 };

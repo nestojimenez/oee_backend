@@ -32,7 +32,7 @@ export const getAlarms = async (req, res) => {
 }
 
   export const createsupportAlarm = async (req, res) => {
-    const { employee, id_stations, al_status, created_at, updated_at } = req.body;
+    const { employee, id_stations, al_status, created_at, updated_at, station_module } = req.body;
 
     let d = new Date();
     let dOnMiliSeconds = d.getTime();
@@ -49,7 +49,8 @@ export const getAlarms = async (req, res) => {
       id_stations: id_stations,
       al_status: al_status,
       created_at: currentDate,
-      updated_at: currentDate
+      updated_at: currentDate,
+      station_module: station_module
     }
 
     console.log("New Alarm", newDestination )
@@ -63,6 +64,7 @@ export const getAlarms = async (req, res) => {
         .input("al_status", al_status)
         .input("created_at",sql.DateTime, currentDate)
         .input("updated_at",sql.DateTime, currentDate)
+        .input("station_module", station_module)
         .query(query.createsupportAlarm);
       res.status(201).end(JSON.stringify(newDestination));
       console.log("MyRecordset", "OK");
